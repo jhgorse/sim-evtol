@@ -1,0 +1,61 @@
+@startuml system simulation sequence diagram
+
+== Initialization ==
+autonumber
+User -> SimEVTOL : Simulate(seed)
+
+SimEVTOL -> SimEVTOL : SimEVTOL(N = 20, K = 5)
+note right : N aircraft and K types of aircraft
+/'User -> SimEVTOL : SimEVTOL(N, K, Seed)'/
+/'SimEVTOL -> AircraftType : AircraftType(name, 6 params) +2 calculated'/
+SimEVTOL -> AircraftType : AircraftType(Alpha...EchoCompany)
+note right : AircraftType(name, 6 params) +2 calculated
+
+SimEVTOL -> ChargerQueue : ChargerQueue(size_t chargers)
+ChargerQueue -> Charger : Charger()
+note right: x3
+Charger -> ChargerQueue : Charger&
+
+SimEVTOL -> RunStatsRecord : Init()
+RunStatsRecord -> StatMetrics : Init(AircraftType&)
+
+SimEVTOL -> SimEVTOL : rank_to_composition(seed)
+SimEVTOL -> Fleet : Init(size_t aircraft_count)
+Fleet -> Aircraft : Aircraft(AircraftType&)
+note right : x20
+
+== Simulation ==
+loop while in simulation operation window
+autonumber 100
+SimEVTOL -> Fleet : Tick(time t)
+Fleet -> Aircraft : UpdateState()
+Aircraft --> ChargerQueue : RequestCharge(Aircraft&)
+note left : battery empty
+Aircraft --> ChargerQueue : Unplug(Aircraft&)
+note left : battery charged
+ChargerQueue -> Charger : PullNextAircraft(Aircraft&)
+note right : charging
+/'ChargerQueue -> Aircraft : Plug(Aircraft&)'/
+
+Fleet -> Aircraft : GetNextEventTime()
+Fleet -> SimEVTOL : GetNextEventTime()
+note right : min duration to next event
+
+SimEVTOL -> SimEVTOL : SetNextTime(t = t')
+note right : if t > tmax, t = tmax; end after next iteration
+end loop
+...
+SimEVTOL -> RunStatsRecord : FinalizeFlightChargeData()
+
+== Report ==
+autonumber 200
+SimEVTOL -> RunStatsRecord : ReportStatMetrics()
+loop for each AircraftType
+RunStatsRecord -> StatMetrics : CalcAveragesAndCounts(AircraftType&)
+end loop
+StatMetrics -> RunStatsRecord
+
+RunStatsRecord -> User : SimulationReport()
+
+@enduml
+

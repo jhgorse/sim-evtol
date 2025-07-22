@@ -20,7 +20,7 @@ RunStatsRecord -> StatMetrics : Init(AircraftType&)
 SimEVTOL -> SimEVTOL : rank_to_composition(seed)
 SimEVTOL -> Fleet : Init(size_t aircraft_count = N)
 Fleet -> Aircraft : Aircraft(AircraftType&)
-note right : x20
+note left : x20
 
 == Simulation ==
 loop while in simulation operation window
@@ -38,7 +38,7 @@ note left : battery charged
 Aircraft -> StatMetrics : ChargingCompleteFlightStart(Aircraft&, time t)
 
 ChargerQueue -> Aircraft : Plug(Aircraft&)
-note right : charging; first three in queue are Aircraft&->state = charging
+note left : charging; first three in queue are Aircraft&->state = charging
 Aircraft -> StatMetrics : ChargingStart(Aircraft&, time t)
 
 Fleet -> Aircraft : GetNextEventTime()

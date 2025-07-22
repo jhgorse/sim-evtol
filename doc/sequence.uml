@@ -12,15 +12,13 @@ SimEVTOL -> AircraftType : AircraftType(Alpha...EchoCompany)
 note right : AircraftType(name, 6 params) +2 calculated
 
 SimEVTOL -> ChargerQueue : ChargerQueue(size_t chargers)
-ChargerQueue -> Charger : Charger()
-note right: x3
-Charger -> ChargerQueue : Charger&
+note right : first three Aircraft& are set to charging
 
 SimEVTOL -> RunStatsRecord : Init()
 RunStatsRecord -> StatMetrics : Init(AircraftType&)
 
 SimEVTOL -> SimEVTOL : rank_to_composition(seed)
-SimEVTOL -> Fleet : Init(size_t aircraft_count)
+SimEVTOL -> Fleet : Init(size_t aircraft_count = N)
 Fleet -> Aircraft : Aircraft(AircraftType&)
 note right : x20
 
@@ -28,24 +26,30 @@ note right : x20
 loop while in simulation operation window
 autonumber 100
 SimEVTOL -> Fleet : Tick(time t)
-Fleet -> Aircraft : UpdateState()
+Fleet -> Aircraft : UpdateState(time t, time t_last)
+Aircraft -> StatMetrics : TimeElapsedUpdateStats(AircraftType&, Aircraft&->state)
+
 Aircraft --> ChargerQueue : RequestCharge(Aircraft&)
 note left : battery empty
+Aircraft -> StatMetrics : FlightComplete(Aircraft&, time t)
+
 Aircraft --> ChargerQueue : Unplug(Aircraft&)
 note left : battery charged
-ChargerQueue -> Charger : PullNextAircraft(Aircraft&)
-note right : charging
-/'ChargerQueue -> Aircraft : Plug(Aircraft&)'/
+Aircraft -> StatMetrics : ChargingCompleteFlightStart(Aircraft&, time t)
+
+ChargerQueue -> Aircraft : Plug(Aircraft&)
+note right : charging; first three in queue are Aircraft&->state = charging
+Aircraft -> StatMetrics : ChargingStart(Aircraft&, time t)
 
 Fleet -> Aircraft : GetNextEventTime()
 Fleet -> SimEVTOL : GetNextEventTime()
 note right : min duration to next event
 
-SimEVTOL -> SimEVTOL : SetNextTime(t = t')
+SimEVTOL -> SimEVTOL : SetNextTime { last_t = t; t = t' }
 note right : if t > tmax, t = tmax; end after next iteration
 end loop
 ...
-SimEVTOL -> RunStatsRecord : FinalizeFlightChargeData()
+SimEVTOL -> StatMetrics : FinalizeFlightChargeData()
 
 == Report ==
 autonumber 200

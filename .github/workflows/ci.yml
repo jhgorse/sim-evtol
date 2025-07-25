@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential
+    
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Debug
+    
+    - name: Build
+      run: |
+        cd build
+        make
+    
+    - name: Run tests
+      run: |
+        cd build
+        ctest --output-on-failure
+    
+    - name: Run executable and capture output
+      run: |
+        cd build
+        ./evtol-simulation > sim_output.log 2>&1
+
+    - name: Show first and last 17 lines of output
+      run: |
+        cd build
+        echo "=== First 17 lines ==="
+        head -n 17 sim_output.log
+        echo "=== Last 17 lines ==="
+        tail -n 17 sim_output.log
+
+    - name: Gzip and tar output
+      run: |
+        cd build
+        gzip -c sim_output.log > sim_output.log.gz
+        tar -cvf evtol-sim-release.tar.gz sim_output.log.gz

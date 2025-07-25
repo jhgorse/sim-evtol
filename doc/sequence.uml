@@ -1,0 +1,100 @@
+@startuml system simulation sequence diagram
+ 
+== Initialization ==
+autonumber
+User -> SimEVTOL : Create(seed, config)
+note right: config = {nAircraft = 20,  nChargers = 3, simDuration = 3.0, aircraftTypes.csv}
+/'cannot know seed range until we known nAircraft and nAircraftTypes'/
+activate SimEVTOL
+SimEVTOL -> SimEVTOL : rank_to_composition(seed)
+
+SimEVTOL -> AircraftType : m_aircraft_types = CreateTypes(aircraftTypes)
+activate AircraftType
+AircraftType --> SimEVTOL : vec<AircraftType>(Alpha...EchoCompany)
+note right : (name, 6 params) +2 calculated
+deactivate AircraftType
+
+SimEVTOL -> Fleet : m_fleet = Create(aircraft_count = N, array[nAircraftTypes] = composition)
+ 
+activate Fleet
+loop to create nAircraft
+Fleet -> Aircraft : vehicle = Create(aircraftType=Alpha...EchoCompany)
+Aircraft --> Fleet
+end loop
+Fleet --> SimEVTOL
+deactivate Fleet
+
+/'note right : '/
+ 
+/'User -> SimEVTOL : SimEVTOL(N, K, Seed)'/
+/'SimEVTOL -> AircraftType : AircraftType(name, 6 params) +2 calculated'/
+ 
+SimEVTOL -> ChargerQueue : m_chargerQueue = Create(nChargers)
+
+SimEVTOL -> RunStatsRecord : m_runStatsRecord = Create()
+RunStatsRecord -> StatMetrics : m_statMetrics = Create()
+ 
+StatMetrics --> SimEVTOL
+ 
+SimEVTOL -> Fleet : SetRunStatsRecord(m_runStatsRecord)
+
+deactivate SimEVTOL
+ 
+ 
+== Simulation ==
+loop while time t < simulation operation window, simDuration
+autonumber 100
+SimEVTOL -> Fleet : Tick(time t)
+activate Fleet
+Fleet -> Aircraft : Update(time t, time t_last, m_runStatsRecord->GetStatMetrics())
+activate Aircraft
+Aircraft -> StatMetrics : TimeElapsedUpdateStats(m_aircraftType, m_state)
+ 
+Aircraft --> ChargerQueue : RequestCharge(this)
+note left : battery empty
+Aircraft -> StatMetrics : FlightComplete(this, time t)
+ 
+Aircraft --> ChargerQueue : Unplug(this)
+note left : battery charged
+Aircraft -> StatMetrics : ChargingCompleteFlightStart(this, time t)
+ 
+Aircraft -> ChargerQueue : CheckSomething()
+activate ChargerQueue
+ 
+ChargerQueue -> Aircraft : Plug(this)
+activate Aircraft
+deactivate Aircraft
+ 
+deactivate ChargerQueue
+note right : charging; first three in queue are Aircraft&->state = charging
+Aircraft -> StatMetrics : ChargingStart(this, time t)
+deactivate Aircraft
+ 
+Fleet -> Aircraft : GetNextEventTime()
+deactivate Fleet
+Fleet -> SimEVTOL : GetNextEventTime()
+note right : min duration to next event
+ 
+SimEVTOL -> SimEVTOL : SetNextTime { last_t = t; t = t' }
+note right : if t > tmax, t = tmax; end after next iteration
+end loop
+...
+SimEVTOL -> StatMetrics : FinalizeFlightChargeData()
+
+
+
+== Report ==
+autonumber 200
+SimEVTOL -> RunStatsRecord : ReportStatMetrics()
+ 
+note right : Not sure here may need a different loop
+ 
+loop for each AircraftType
+RunStatsRecord -> StatMetrics : CalcAveragesAndCounts(AircraftType&)
+end loop
+StatMetrics -> RunStatsRecord
+ 
+RunStatsRecord -> User : SimulationReport()
+ 
+@enduml
+

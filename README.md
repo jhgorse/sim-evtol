@@ -5,10 +5,10 @@
 ## Reference Documents
 
 1. [eVtol\_Simulation\_Problem\_-\_AnyTimeDomain\_V2\_(1).pdf](https://drive.google.com/file/d/1SPi4VnmAFmv-zx6UiDNhYBel8Qd28zie/view?usp=sharing)  
-   1. [eVTOL Aircraft](https://docs.google.com/spreadsheets/d/1-LTgdlu5lFlGsYdDcAFw6e9xE-063WjqAM_zu5wDRs4/edit?gid=0#gid=0) Characteristics  
-   2. [eVtol\_Simulation\_Problem\_-\_AnyTimeDomain\_V2\_(1)](https://docs.google.com/document/d/1PSqVqTUEh6liWE_RJonXginCqF4PEbdtAV1Q7q176Dw/edit?tab=t.0)  
-2. [Joby](https://drive.google.com/drive/u/0/folders/1oDOTqTPOL5KUaKjgYuu6dIaNPwnuwoPA) Directory  
-3. [pub\_scientific-and-engineering-c-an-introduction-with-advanced-techniques-and-examples.pdf](https://drive.google.com/file/d/1TIf4128zKpGNFEyiPEXxS-ivI-1mkVUL/view?usp=drive_link)
+   1. [eVTOL Aircraft Manual Calculations.xlsx](https://github.com/jhgorse/sim-evtol/blob/dev/doc/eVTOL%20Aircraft%20Manual%20Calculations.xlsx)
+   2. [eVtol\_Simulation\_Problem\_-\_AnyTimeDomain\_V2\_(1).doc](https://docs.google.com/document/d/1PSqVqTUEh6liWE_RJonXginCqF4PEbdtAV1Q7q176Dw/edit?tab=t.0)
+   3. [eVTOL Simulation Prelim Design Drawings.pptx](https://github.com/jhgorse/sim-evtol/blob/dev/doc/eVTOL%20Simulation%20Prelim%20Design%20Drawings.pptx)
+2. [pub\_scientific-and-engineering-c-an-introduction-with-advanced-techniques-and-examples.pdf](https://drive.google.com/file/d/1TIf4128zKpGNFEyiPEXxS-ivI-1mkVUL/view?usp=drive_link)
 
 # Log
 
@@ -18,6 +18,50 @@
 - [x] Gather docs into repo  
 - [x] Final Review  
 - [x] Release
+
+`sim-evtol` Output Sample:
+https://github.com/jhgorse/sim-evtol/actions/runs/16529697879/job/46751801744#step:8:11
+
+```
+=== eVTOL Simulation JHG ===
+Run simulation with Seed: 1, Composition: 0 0 0 0 20 , Aircraft: 20, Chargers: 3, Duration: 3 hours
+Simulation completed at time 3 hours
+
+=== eVTOL Simulation Results (Table Format) ===
+Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company    
+---------------------------------------------------------------------------------------------------------
+Average flight time (hrs)0.000           0.000           0.000           0.000           0.862           
+Average distance (miles) 0.0             0.0             0.0             0.0             25.9            
+Average charge time (hrs)0.000           0.000           0.000           0.000           0.300           
+Total faults             0               0               0               0               40              
+Total passenger miles    0.0             0.0             0.0             0.0             1837.7          
+Number of flights        0.00            0.00            0.00            0.00            35.53           
+Number of charges        0.00            0.00            0.00            0.00            21.38           
+
+Simulation completed.
+Run simulation with Seed: 2, Composition: 0 0 0 1 19 , Aircraft: 20, Chargers: 3, Duration: 3 hours
+=== Last 17 lines ===
+
+Simulation completed.
+Run simulation with Seed: 10626, Composition: 20 0 0 0 0 , Aircraft: 20, Chargers: 3, Duration: 3 hours
+Simulation completed at time 3 hours
+
+=== eVTOL Simulation Results (Table Format) ===
+Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company    
+---------------------------------------------------------------------------------------------------------
+Average flight time (hrs)1.667           0.000           0.000           0.000           0.000           
+Average distance (miles) 200.0           0.0             0.0             0.0             0.0             
+Average charge time (hrs)0.600           0.000           0.000           0.000           0.000           
+Total faults             0               0               0               0               0               
+Total passenger miles    17248.0         0.0             0.0             0.0             0.0             
+Number of flights        21.56           0.00            0.00            0.00            0.00            
+Number of charges        6.67            0.00            0.00            0.00            0.00            
+
+Simulation completed.
+```
+
+The entire simulation takes 649 ms in a single-thread on modern hardware for the 10,626 combinations of 5 aircraft types 
+adding to a fleet of 20. Captured above are the first and last runs from the Github action.
 
 ## 2025-08-24 Thursday
 

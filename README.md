@@ -12,7 +12,96 @@
 
 # Log
 
-## 2025-08-25 Friday
+## 2025-07-26 Sun
+
+`Run simulation with Seed: 1, Composition: 0 0 0 0 20 , Aircraft: 20, Chargers: 3, Duration: 3 hours`  
+`Simulation completed at time 3 hours`
+
+`=== eVTOL Simulation Results (Table Format) ===`  
+`Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company`      
+`---------------------------------------------------------------------------------------------------------`  
+`Average flight time (hrs)0.000           0.000           0.000           0.000           0.862`             
+`Average distance (miles) 0.0             0.0             0.0             0.0             25.9`              
+`Average charge time (hrs)0.000           0.000           0.000           0.000           0.300`             
+`Total faults             0               0               0               0               40`                
+`Total passenger miles    0.0             0.0             0.0             0.0             1837.7`            
+`Number of flights        0.00            0.00            0.00            0.00            35.53`             
+`Number of charges        0.00            0.00            0.00            0.00            21.38`  
+
+`Run simulation with Seed: 21, Composition: 0 0 0 20 0 , Aircraft: 20, Chargers: 3, Duration: 3 hours`  
+`Simulation completed at time 3 hours`
+
+`=== eVTOL Simulation Results (Table Format) ===`  
+`Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company`      
+`---------------------------------------------------------------------------------------------------------`  
+`Average flight time (hrs)0.000           0.000           0.000           1.667           0.000`             
+`Average distance (miles) 0.0             0.0             0.0             150.0           0.0`               
+`Average charge time (hrs)0.000           0.000           0.000           0.620           0.000`             
+`Total faults             0               0               0               0               0`                 
+`Total passenger miles    0.0             0.0             0.0             6435.6          0.0`               
+`Number of flights        0.00            0.00            0.00            21.45           0.00`              
+`Number of charges        0.00            0.00            0.00            6.45            0.00`   
+
+`Run simulation with Seed: 231, Composition: 0 0 20 0 0 , Aircraft: 20, Chargers: 3, Duration: 3 hours`  
+`Simulation completed at time 3 hours`
+
+`=== eVTOL Simulation Results (Table Format) ===`  
+`Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company`      
+`---------------------------------------------------------------------------------------------------------`  
+`Average flight time (hrs)0.000           0.000           0.625           0.000           0.000`             
+`Average distance (miles) 0.0             0.0             100.0           0.0             0.0`               
+`Average charge time (hrs)0.000           0.000           0.800           0.000           0.000`             
+`Total faults             0               0               0               0               0`                 
+`Total passenger miles    0.0             0.0             7800.0          0.0             0.0`               
+`Number of flights        0.00            0.00            26.00           0.00            0.00`              
+`Number of charges        0.00            0.00            8.91            0.00            0.00`     
+
+`Run simulation with Seed: 1771, Composition: 0 20 0 0 0 , Aircraft: 20, Chargers: 3, Duration: 3 hours`  
+`Simulation completed at time 3 hours`
+
+`=== eVTOL Simulation Results (Table Format) ===`  
+`Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company`      
+`---------------------------------------------------------------------------------------------------------`  
+`Average flight time (hrs)0.000           0.667           0.000           0.000           0.000`             
+`Average distance (miles) 0.0             66.7            0.0             0.0             0.0`               
+`Average charge time (hrs)0.000           0.200           0.000           0.000           0.000`             
+`Total faults             0               0               0               0               0`                 
+`Total passenger miles    0.0             16166.7         0.0             0.0             0.0`               
+`Number of flights        0.00            48.50           0.00            0.00            0.00`              
+`Number of charges        0.00            35.00           0.00            0.00            0.00`         
+
+`Run simulation with Seed: 10626, Composition: 20 0 0 0 0 , Aircraft: 20, Chargers: 3, Duration: 3 hours`  
+`Simulation completed at time 3 hours`
+
+`=== eVTOL Simulation Results (Table Format) ===`  
+`Metric                   Alpha Company   Bravo Company   Charlie Company Delta Company   Echo Company`      
+`---------------------------------------------------------------------------------------------------------`  
+`Average flight time (hrs)1.667           0.000           0.000           0.000           0.000`             
+`Average distance (miles) 200.0           0.0             0.0             0.0             0.0`               
+`Average charge time (hrs)0.600           0.000           0.000           0.000           0.000`             
+`Total faults             0               0               0               0               0`                 
+`Total passenger miles    17248.0         0.0             0.0             0.0             0.0`               
+`Number of flights        21.56           0.00            0.00            0.00            0.00`              
+`Number of charges        6.67            0.00            0.00            0.00            0.00`            
+
+`Alpha Company has the highest Total Passenger Miles.`
+
+`Which is surprising, because Bravo performed better than Alpha on its own without the charger constraint.`
+
+| Company Name | Alpha Company | Bravo Company | Charlie Company | Delta Company | Echo Company |
+| :---- | ----- | ----- | ----- | ----- | ----- |
+| Average flight time (hrs) | 1.67 | 0.667 | 0.625 | 1.67 | 0.862 |
+| Average distance (miles) | 200.0 | 66.7 | 100.0 | 150.0 | 25.9 |
+| Average charge time (hrs) | 0.60 | 0.20 | 0.80 | 0.62 | 0.30 |
+| Min Faults | 0.75 | 0.30 | 0.15 | 0.66 | 1.83 |
+| Passenger miles per vehicle | 1152 | 1200 | 672 | 428.4 | 144 |
+| Flights | 1.44 | 3.60 | 2.24 | 1.43 | 2.78 |
+| Charges | 1 | 3 | 2 | 1 | 2 |
+| Flight Time | 2.40 | 2.40 | 1.4 | 2.38 | 2.40 |
+| Charge Time | 0.60 | 0.60 | 1.60 | 0.62 | 0.60 |
+
+
+## 2025-07-25 Friday
 
 - [x] ~~GH Actions~~  
 - [x] Gather docs into repo  
@@ -63,7 +152,7 @@ Simulation completed.
 The entire simulation takes 649 ms in a single-thread on modern hardware for the 10,626 combinations of 5 aircraft types 
 adding to a fleet of 20. Captured above are the first and last runs from the Github action.
 
-## 2025-08-24 Thursday
+## 2025-07-24 Thursday
 
 Tweaks and tests.  
 0625  
@@ -85,7 +174,7 @@ Massage stats verification.
 
 2158
 
-## 2025-08-23 Wednesday
+## 2025-07-23 Wednesday
 
 1046  
 1346  
